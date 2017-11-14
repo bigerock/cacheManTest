@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<div class="row">
+    @*Do something cool:
+    @foreach (var d in Model.GetRandomDataFromDb())
+    {
+        <p>@d</p>
+    }
+    <hr/>*@
+    <hr/>
+    @{
+        var howMany = 500;
+    }
+    @while (howMany > 0)
+    {
+        <p>@howMany : @Model.GetDateTime(howMany)</p>
+        howMany--;
+    }
+
+</div>
