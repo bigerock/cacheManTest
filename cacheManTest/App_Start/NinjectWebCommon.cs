@@ -114,21 +114,21 @@ namespace cacheManTest.App_Start
                 cacheConfig = ConfigurationBuilder.BuildConfiguration("memandrediscache", settings =>
                 {
                     settings
-                    .WithSystemWebCacheHandle("inProcessCache")
-                    //.EnableStatistics()
-                    .And
-                    .WithRedisConfiguration(redisKey, config => config
-                        .WithAllowAdmin()
-                        .WithConnectionTimeout(5000)
-                        .WithEndpoint(endPointUrl, endPointPort)
-                        .WithPassword(password)
-                    //.WithSsl()
-                    )
-                    .WithJsonSerializer(jsonSer, jsonDeSer)
-                    .WithMaxRetries(5) //from 1000
-                    .WithRetryTimeout(1000)
-                    .WithRedisBackplane(redisKey)
-                    .WithRedisCacheHandle(redisKey, true);
+                        .WithSystemWebCacheHandle("inProcessCache")
+                        //.EnableStatistics()
+                        .And
+                        .WithRedisConfiguration(redisKey, config => config
+                                .WithAllowAdmin()
+                                .WithConnectionTimeout(5000)
+                                .WithEndpoint(endPointUrl, endPointPort)
+                                .WithPassword(password)
+                            //.WithSsl()
+                        )
+                        .WithJsonSerializer(jsonSer, jsonDeSer)
+                        .WithMaxRetries(5) //from 1000
+                        .WithRetryTimeout(1000)
+                        .WithRedisBackplane(redisKey)
+                        .WithRedisCacheHandle(redisKey);
                 });
             }
 

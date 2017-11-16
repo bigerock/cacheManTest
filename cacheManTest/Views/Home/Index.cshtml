@@ -1,9 +1,57 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+@section Head{
+    <style type="text/css">
+        .lnk { cursor: pointer; text-decoration: underline; color: blue;}
+        .working { color: green; }
+        .done { color: gray; }
+        .oops { color: red; }
+    </style>
 
+    <script type="text/javascript">
+        $(function() {
+            $("span[id^='rem']").on('click', function() {
+                var thisEl = $(this);
+                //if ($(thisEl).text().indexOf('deleted') >= 0) {
+                //    $(thisEl).text('already deleted');
+                //    return;
+                //}
+                var thisid = $(thisEl).attr('id').replace('rem', '');
+                $(thisEl).text('removing').addClass('working');
+                $.ajax({
+                    type: 'GET',
+                    url: '/home/removestring/{0}'.replace('{0}', thisid),
+                    success: function() {
+                        $(thisEl).text('deleted').removeClass('working').addClass('done');
+                    },
+                    fail: function() {
+                        $(thisEl).text('oops').removeClass('working').addClass('oops');
+                    }
+                    });
+                });
 
-
+            $("span[id^='get']").on('click', function() {
+                var thisEl = $(this);
+                var thisid = $(thisEl).attr('id').replace('get', '');
+                $(thisEl).text('getting').addClass('working');
+                $('#str' + thisid).text('');
+                $.ajax({
+                    type: 'GET',
+                    url: '/home/getstring/{0}'.replace('{0}', thisid),
+                    success: function (data) {
+                        $('#str' + thisid).text(data);
+                        $('#str' + thisid).addClass('working');
+                        $(thisEl).text('new string!').removeClass('working').addClass('done');
+                    },
+                    fail: function() {
+                        $(thisEl).text('oops').removeClass('working').addClass('oops');
+                    }
+                });
+            });
+        });
+    </script>
+}
 <div class="row">
     @*Do something cool:
     @foreach (var d in Model.GetRandomDataFromDb())
@@ -11,13 +59,27 @@
         <p>@d</p>
     }
     <hr/>*@
-    <hr/>
+    @*<hr/>
     @{
         var howMany = 500;
     }
     @while (howMany > 0)
     {
         <p>@howMany : @Model.GetDateTime(howMany)</p>
+        howMany--;
+    }*@
+    
+    <hr />
+    @{
+        var howMany = 50;
+    }
+    @while (howMany > 0)
+    {
+        <p>
+            <span class="lnk" id="rem@(howMany)">remove</span> | 
+            <span class="lnk" id="get@(howMany)">get</span> 
+            @howMany : <span id="str@(howMany)">@Model.GetString(howMany)</span>
+        </p>
         howMany--;
     }
 
